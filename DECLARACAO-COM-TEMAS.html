@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    function toggleThemePopup() {
+      const popup = document.getElementById('themePopup');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    const temas = {
+      /*Grafite Chic + Off-White*/
+      grafite: {
+        "--cor-principal": "#2e2e2e",
+        "--cor-hover": "#4a4a4a",
+        "--cor-fonte": "#1e1e1e",
+        "--cor-fundo": "#f7f7f7",
+        "--cor-caixa": "#ffffff",
+        "--cor-erro": "#993333"
+      },
+      /*Azul Midnight + Cinza Neutro*/  
+      midnight: {
+        "--cor-principal": "#1e3a5f",
+        "--cor-hover": "#294a73",
+        "--cor-fonte": "#2b2b2b",
+        "--cor-fundo": "#f5f7fa",
+        "--cor-caixa": "#ffffff",
+        "--cor-erro": "#9b1c27"
+      },
+      /*Bordeaux + Cinza Suave*/
+      bordeaux: {
+        "--cor-principal": "#6b0f1a",
+        "--cor-hover": "#8c1c26",
+        "--cor-fonte": "#2e2e2e",
+        "--cor-fundo": "#f4f1ee",
+        "--cor-caixa": "#fbfbfb",
+        "--cor-erro": "#a01d28"
+      },
+      /*Blush + Grafite*/
+      blush: {
+        "--cor-principal": "#b65d6d",
+        "--cor-hover": "#94434f",
+        "--cor-fonte": "#2c2c2c",
+        "--cor-fundo": "#f9f5f4",
+        "--cor-caixa": "#ffffff",
+        "--cor-erro": "#a44250"
+      },
+      /*Verde Sálvia + Bege*/
+      salvia: {
+        "--cor-principal": "#4b5d52",
+        "--cor-hover": "#6c7a6a",
+        "--cor-fonte": "#3a3a3a",
+        "--cor-fundo": "#f6f4ef",
+        "--cor-caixa": "#fdfdfb",
+        "--cor-erro": "#704a4a"
+      }
+    };
+
+    // Aplica tema salvo no localStorage ou usa 'grafite'
+    (function aplicarTemaInicial() {
+      const nomeTema = localStorage.getItem('temaSelecionado') || 'grafite';
+      const tema = temas[nomeTema];
+      if (tema) {
+        const root = document.documentElement;
+        for (let chave in tema) {
+          root.style.setProperty(chave, tema[chave]);
+        }
+      }
+    })();
+
+  </script>
+  <title>DECLARAÇÃO DE COMPARECIMENTO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+      max-width: 600px;
+      margin: auto;
+      background-color: var(--cor-fundo);
+    }
+
+    input,
+    button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    label,
+    .field-container>span {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--cor-fonte);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-wrapper {
+      width: 75%;
+      margin-left: 25%;
+      text-align: left;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .field-container {
+      position: relative;
+      margin-bottom: 24px;
+      display: block;
+      text-align: left;
+    }
+
+    .error-bubble {
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      transform: translate(-0%, 5px);
+      background-color: var(--cor-erro);
+      color: white;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .error-bubble::before {
+      content: '';
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='white'/><path d='M12 7v5m0 4h.01' stroke='%23a01d28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    .error-bubble.show {
+      opacity: 1;
+      transform: translateY(0px);
+      pointer-events: auto;
+    }
+
+    @media print {
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 20mm;
+        box-sizing: border-box;
+      }
+
+      @page {
+        margin: 20mm;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      input,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 10px 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .field-container {
+        margin-bottom: 20px;
+      }
+    }
+
+    .radio-button-group {
+      margin-top: 10px;
+    }
+
+    input[type="radio"].styled {
+      display: none;
+    }
+
+    input[type="radio"].styled+label {
+      display: inline-block;
+      padding: 10px 16px;
+      margin: 5px 8px 5px 0;
+      border-radius: 6px;
+      background-color: white;
+      border: 2px solid var(--cor-principal);
+      color: var(--cor-principal);
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    input[type="radio"].styled:checked+label {
+      background-color: var(--cor-principal);
+      color: white;
+    }
+
+    #manualFields {
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    #manualFields .field-container {
+      flex: 1 1 45%;
+    }
+
+    @media (max-width: 600px) {
+      #manualFields {
+        flex-direction: column;
+      }
+    }
+
+    input[type="date"],
+    select {
+      font-family: inherit;
+      font-size: 16px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+      margin-top: 5px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus {
+      border-color: var(--cor-principal);
+      outline: none;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: var(--cor-fonte);
+    }
+
+    button {
+      background-color: var(--cor-principal);
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 17px;
+      padding: 14px 28px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--cor-hover);
+    }
+
+    .form-wrapper {
+      background-color: var(--cor-caixa);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      margin: auto;
+      /* color: var(--cor-fonte); */
+    }
+
+    .form-wrapper h1 {
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--cor-principal);
+      color: var(--cor-principal);
+    }
+
+    /* Botão flutuante para troca de tema */
+    #themeButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--cor-caixa);
+      color: var(--cor-principal);
+      border-radius: 6px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      cursor: pointer;
+      padding: 0px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    #themeButton svg {
+      width: 40px;
+      height: 40px;
+      /* color: var(--cor-principal); */
+    } 
+
+    #themeButton:hover {
+      /* transform: scale(1.1); */
+      color: var(--cor-hover);
+    }
+
+    #themePopup {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: var(--cor-caixa);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    #themePopup label {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--cor-fonte);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .theme-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-block;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid transparent;
+    }
+
+    .theme-option:hover::after {
+      content: attr(data-name);
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .theme-option:hover {
+      border-color: var(--cor-fundo);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <h1>DECLARAÇÃO DE COMPARECIMENTO</h1>
+    <div class="field-container" id="faixaContainer">
+      <span>Faixa Etária:</span>
+      <input type="radio" class="styled" name="faixa" id="faixaAdulto" value="adulto"
+        onchange="hideError('faixaError'); toggleAcompanhante()" /><label for="faixaAdulto">ADULTO</label>
+      <input type="radio" class="styled" name="faixa" id="faixaCrianca" value="crianca"
+        onchange="hideError('faixaError'); toggleAcompanhante()" /><label for="faixaCrianca">CRIANÇA</label>
+      <div id="faixaError" class="error-bubble">Selecione uma opção</div>
+    </div>
+
+    <div class="field-container" id="nameContainer">
+      <label for="nameInput">Nome do Paciente:</label>
+      <input type="text" id="nameInput" placeholder="Nome do Paciente" oninput="hideError('nameError')" />
+      <div id="nameError" class="error-bubble">Preencha o nome do paciente</div>
+    </div>
+
+    <div class="field-container" id="tipoContainer">
+      <span>Tipo:</span>
+      <input type="radio" class="styled" name="tipo" id="tipoPaciente" value="paciente" checked
+        onchange="toggleAcompanhante()" /><label for="tipoPaciente">PACIENTE</label>
+      <input type="radio" class="styled" name="tipo" id="tipoAcompanhante" value="acompanhante"
+        onchange="toggleAcompanhante()" /><label for="tipoAcompanhante">ACOMPANHANTE</label>
+    </div>
+
+    <div class="field-container" id="acompanhanteContainer" class="hidden">
+      <label for="acompanhanteInput">Nome do Acompanhante:</label>
+      <input type="text" id="acompanhanteInput" placeholder="Nome do Acompanhante"
+        oninput="hideError('acompanhanteError')" />
+      <div id="acompanhanteError" class="error-bubble">Preencha o nome do acompanhante</div>
+    </div>
+
+    <div class="field-container">
+      <label>Como deseja informar a data e o turno?</label>
+      <div class="radio-button-group">
+        <input type="radio" class="styled" name="dataEscolha" id="auto" value="automatico" checked
+          onchange="toggleManualFields()" />
+        <label for="auto">AUTOMATICAMENTE</label>
+
+        <input type="radio" class="styled" name="dataEscolha" id="manual" value="manual"
+          onchange="toggleManualFields()" />
+        <label for="manual">MANUALMENTE</label>
+      </div>
+    </div>
+
+    <div id="manualFields" class="hidden">
+      <div class="field-container">
+        <label for="manualDate">Data:</label><br />
+        <input type="date" id="manualDate" oninput="hideError('manualDateError')" />
+        <div id="manualDateError" class="error-bubble">Selecione a data</div>
+      </div>
+
+      <div class="field-container">
+        <label for="manualTurno">Turno:</label><br />
+        <select id="manualTurno" oninput="hideError('manualTurnoError')">
+          <option value="">Selecione o turno</option>
+          <option value="manha">Manhã</option>
+          <option value="tarde">Tarde</option>
+        </select>
+        <div id="manualTurnoError" class="error-bubble">Selecione o turno</div>
+      </div>
+    </div>
+    <br>
+    <div style="text-align: center;">
+      <button onclick="generateDeclaration()">Gerar Declaração</button>
+    </div>
+  </div>
+  </div>
+
+  <div id="loadingModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; font-size: 20px; color: white; font-family: Arial, sans-serif;">
+    <div>Gerando declaração...</div>
+  </div>
+
+  <script>
+    function toggleAcompanhante() {
+      const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+      const acompanhanteContainer = document.getElementById('acompanhanteContainer');
+      acompanhanteContainer.classList.toggle('hidden', tipo !== 'acompanhante');
+    }
+
+    function hideError(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    function toggleManualFields() {
+      const dataEscolha = document.querySelector('input[name="dataEscolha"]:checked').value;
+      const manualFields = document.getElementById('manualFields');
+      manualFields.classList.toggle('hidden', dataEscolha === 'automatico');
+    }
+
+    function formatDateBR(date) {
+      const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+      return `${date.getDate()} de ${meses[date.getMonth()]} de ${date.getFullYear()}`;
+    }
+
+    function generateDeclaration() {
+      document.getElementById('loadingModal').style.display = 'flex';
+
+      const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+      const faixa = document.querySelector('input[name="faixa"]:checked')?.value;
+      const name = document.getElementById('nameInput').value.trim();
+      const acompanhante = document.getElementById('acompanhanteInput').value.trim();
+      const dataEscolha = document.querySelector('input[name="dataEscolha"]:checked')?.value;
+      const date = dataEscolha === 'manual' ? document.getElementById('manualDate').value : new Date();
+      const turno = dataEscolha === 'manual' ? document.getElementById('manualTurno').value : (new Date().getHours() < 12 ? 'manhã' : 'tarde');
+
+      let hasError = false;
+      document.getElementById('nameError').classList.remove('show');
+      document.getElementById('acompanhanteError').classList.remove('show');
+      document.getElementById('faixaError').classList.remove('show');
+      document.getElementById('manualDateError').classList.remove('show');
+      document.getElementById('manualTurnoError').classList.remove('show');
+
+      if (!faixa) {
+        document.getElementById('faixaError').classList.add('show');
+        hasError = true;
+      }
+      if (!name) {
+        document.getElementById('nameError').classList.add('show');
+        hasError = true;
+      }
+      if (tipo === 'acompanhante' && !acompanhante) {
+        document.getElementById('acompanhanteError').classList.add('show');
+        hasError = true;
+      }
+      if (dataEscolha === 'manual' && !date) {
+        document.getElementById('manualDateError').classList.add('show');
+        hasError = true;
+      }
+      if (dataEscolha === 'manual' && !turno) {
+        document.getElementById('manualTurnoError').classList.add('show');
+        hasError = true;
+      }
+
+      if (hasError) {
+        document.getElementById('loadingModal').style.display = 'none';
+        return;
+      }
+
+      const dateFormatted = formatDateBR(new Date(date));
+      const nameUpper = name.toUpperCase();
+      const acompanhanteUpper = acompanhante.toUpperCase();
+
+      let corpoTexto = '';
+      if (faixa === 'crianca') {
+        corpoTexto = tipo === 'paciente'
+          ? `Declaramos, para os devidos fins, que o(a) menor <strong>${nameUpper}</strong>, acompanhado(a) por seu responsável, compareceu a esta clínica no dia <strong>${dateFormatted}</strong>, no período da <strong>${turno}</strong>, para a realização de exames médicos.`
+          : `Declaramos, para os devidos fins, que o(a) Sr(a). <strong>${acompanhanteUpper}</strong> compareceu a esta clínica no dia <strong>${dateFormatted}</strong>, no período da <strong>${turno}</strong>, como acompanhante do menor <strong>${nameUpper}</strong>.`;
+      } else {
+        corpoTexto = tipo === 'paciente'
+          ? `Declaramos, para os devidos fins, que o(a) Sr(a). <strong>${nameUpper}</strong> compareceu a esta clínica no dia <strong>${dateFormatted}</strong>, no período da <strong>${turno}</strong>, para a realização de exames médicos.`
+          : `Declaramos, para os devidos fins, que o(a) Sr(a). <strong>${acompanhanteUpper}</strong> compareceu a esta clínica no dia <strong>${dateFormatted}</strong>, no período da <strong>${turno}</strong>, como acompanhante de <strong>${nameUpper}</strong>.`;
+      }
+
+      let finalidade = '';
+      if (faixa === 'crianca') {
+        // Quando for CRIANÇA e ACOMPANHANTE, a finalidade deve ser justificar a ausência no trabalho
+        finalidade = tipo === 'acompanhante'
+          ? "Esta declaração é emitida conforme o disposto no § 1º do art. 6º da Lei nº 605/49, com a finalidade de justificar ausência em suas atividades habituais no referido período."
+          : "Esta declaração tem como finalidade justificar sua ausência em suas atividades habituais nesse período, incluindo, quando aplicável, compromissos escolares, terapêuticos ou assistenciais.";
+      } else {
+        // Quando for ADULTO, a finalidade é justificar a ausência nas atividades habituais
+        finalidade = "Esta declaração é emitida conforme o disposto no § 1º do art. 6º da Lei nº 605/49, com a finalidade de justificar ausência em suas atividades habituais no referido período.";
+      }
+
+      const content = `
+        <html>
+        <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            margin: 0;
+            box-sizing: border-box;
+            text-align: justify;
+          }
+
+          .logo { text-align: center; margin-bottom: 100px; }
+
+          .logo img { max-width: 400px; height: auto; }
+
+          .content { font-size: 18px; line-height: 1.6; }
+
+          .right { text-align: right; margin-top: 20px; }
+
+          .footer {
+            position: absolute;
+            bottom: 0mm;
+            width: calc(100% - 40mm);
+            font-size: 16px;
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 10px;
+          }
+
+          .footer .clinic-name {
+            font-size: 18px;
+            font-weight: bold;
+          }
+
+          .footer-line {
+          border-top: 2px solid #ccc;
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto 20px auto;
+          }
+
+          svg {
+           display: inline-block; 
+           vertical-align: middle; /* ou top */
+          }
+          
+        </style>
+
+        </head>
+        <body onload="window.print(); window.onafterprint = () => window.close();">
+          <div class="logo">
+            <img src="https://i.imgur.com/leqG1hv.png" alt="Logo Otogastro" />
+          </div>
+          <div class="content">
+            <h2 style="text-align:center;">DECLARAÇÃO DE COMPARECIMENTO</h2>
+            <p>${corpoTexto}</p>
+            <p>${finalidade}</p>
+            <br>
+            <div class="right">Petrolina, ${dateFormatted}</div>
+          </div>
+          <div class="footer">
+          <div class="footer-line"></div>
+            <p>
+              <span class="clinic-name">CLÍNICA OTOGASTRO</span><br />
+              Rua Dr. Júlio de Melo, 330 – Centro – Petrolina – PE – CEP 56302-150<br />
+
+              <svg aria-hidden="true" data-prefix="fal" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" class="svg-inline--fa fa-phone fa-w-16 fa-7x"><g transform="scale(-1,1) translate(-512,0)"><path fill="currentColor" d="M487.8 24.1L387 .8c-14.7-3.4-29.8 4.2-35.8 18.1l-46.5 108.5c-5.5 12.7-1.8 27.7 8.9 36.5l53.9 44.1c-34 69.2-90.3 125.6-159.6 159.6l-44.1-53.9c-8.8-10.7-23.8-14.4-36.5-8.9L18.9 351.3C5 357.3-2.6 372.3.8 387L24 487.7C27.3 502 39.9 512 54.5 512 306.7 512 512 307.8 512 54.5c0-14.6-10-27.2-24.2-30.4zM55.1 480l-23-99.6 107.4-46 59.5 72.8c103.6-48.6 159.7-104.9 208.1-208.1l-72.8-59.5 46-107.4 99.6 23C479.7 289.7 289.6 479.7 55.1 480z" class=""></path></svg>
+
+              (87) 3861-1198 | 
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+
+              (87) 9-8108-4686<br />
+              CNPJ: 00.713.307/0001-30
+            </p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      let iframe = document.getElementById('printFrame');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.id = 'printFrame';
+        document.body.appendChild(iframe);
+      }
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(content);
+      doc.close();
+      document.getElementById('loadingModal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      toggleAcompanhante(); // Ocultar o campo "Nome do Acompanhante" ao carregar
+      toggleManualFields(); // Ocultar campos de data e turno manual ao carregar
+    });
+  </script>
+  <!-- Botão paleta de cores -->
+  <button id="themeButton" onclick="toggleThemePopup()">
+    <svg fill="currentColor" width="24px" height="24px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+      <title>Escolher tema</title>
+      <path
+        d="M416,352c-12.6-.84-21-4-28-12-14-16-14-36,5.49-52.48l32.82-29.14c50.27-44.41,50.27-117.21,0-161.63C389.26,64.14,339.54,48,287.86,48c-60.34,0-123.39,22-172,65.11-90.46,80-90.46,210.92,0,290.87,45,39.76,105.63,59.59,165.64,60h1.84c60,0,119.07-19.5,161.2-56.77C464,390,464,385,444.62,355.56,440,348,431,353,416,352ZM112,208a32,32,0,1,1,32,32A32,32,0,0,1,112,208Zm40,135a32,32,0,1,1,32-32A32,32,0,0,1,152,343Zm40-199a32,32,0,1,1,32,32A32,32,0,0,1,192,144Zm64,271a48,48,0,1,1,48-48A48,48,0,0,1,256,415Zm72-239a32,32,0,1,1,32-32A32,32,0,0,1,328,176Z">
+      </path>
+    </svg>
+  </button>
+
+
+
+  <!-- Popup com título e opções -->
+  <div id="themePopup">
+    <label for="temaSelect">Escolha o tema:</label>
+    <div class="theme-option" data-name="Grafite" style="background-color:#2e2e2e;" onclick="setTheme('grafite')"></div>
+    <div class="theme-option" data-name="Midnight" style="background-color:#1e3a5f;" onclick="setTheme('midnight')">
+    </div>
+    <div class="theme-option" data-name="Bordeaux" style="background-color:#6b0f1a;" onclick="setTheme('bordeaux')">
+    </div>
+    <div class="theme-option" data-name="Blush" style="background-color:#b65d6d;" onclick="setTheme('blush')"></div>
+    <div class="theme-option" data-name="Sálvia" style="background-color:#4b5d52;" onclick="setTheme('salvia')"></div>
+  </div>
+  </div>
+
+
+  <script>
+    function setTheme(nome) {
+      const root = document.documentElement;
+      const tema = temas[nome];
+      for (let chave in tema) {
+        root.style.setProperty(chave, tema[chave]);
+      }
+      localStorage.setItem('temaSelecionado', nome); // salva o tema
+      document.getElementById('themePopup').style.display = 'none';
+    }
+
+    document.addEventListener('click', function (event) {
+      const popup = document.getElementById('themePopup');
+      const button = document.getElementById('themeButton');
+      if (!popup.contains(event.target) && !button.contains(event.target)) {
+        popup.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+
+</html>
